@@ -5,49 +5,22 @@ namespace data_lab {
 
 int32_t add(int32_t a, int32_t b) {
 
-    int32_t sum, carry;
+    int32_t P = a ^ b;
+    int32_t G = a & b;
 
-    // Use and and xor to decompose addition
-    sum = a ^ b; 
-    carry = (a & b) << 1; 
+    int32_t temp_P = P;
 
-    // We need to calculate sum + carry
-    // This may generate a new carry, so we need to decompose again
-    // The longest propagation of carry in a int32_t addition is 31 times,
-    // so we repeat 31 times
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; carry = (a & b) << 1; 
-    a = sum; b = carry; sum = a ^ b; 
+    G |= (G << 1) & P;
+    P &= P << 1;
+    G |= (G << 2) & P;
+    P &= P << 2;
+    G |= (G << 4) & P;
+    P &= P << 4;
+    G |= (G << 8) & P;
+    P &= P << 8;
+    G |= (G << 16) & P;
 
-    return sum;
+    return temp_P ^ (G << 1);
 
 }
 
